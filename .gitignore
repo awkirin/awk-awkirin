@@ -1,0 +1,8 @@
+/vendor
+/.vscode
+/.vagrant
+.phpunit.result.cache
+
+builds
+input
+output
