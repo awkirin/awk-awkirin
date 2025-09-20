@@ -1,5 +1,6 @@
 {
     "name": "awkirin/awkwrap",
+    "version": "1.0.0",
     "description": "Краткое описание вашего пакета",
     "license": "proprietary",
     "require": {
