@@ -3,7 +3,7 @@
   mkdir -p ~/bin && curl -L https://github.com/awkirin/awk-laravel-zero/releases/download/latest/awk-helper -o ~/bin/awk-helper && chmod +x ~/bin/awk-helper
 ```
 
-
+Qqqq
 ```bash
 
   composer global config repositories.awk-awkwrap vcs https://github.com/awkirin/awk-awkwrap
