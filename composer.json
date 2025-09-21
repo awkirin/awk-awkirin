@@ -1,6 +1,7 @@
 {
     "name": "awkirin/awkirin",
     "description": "description",
+    "license": "proprietary",
     "type": "project",
     "scripts": {
         "build": "./awkirin app:build awkirin --build-version=latest"
