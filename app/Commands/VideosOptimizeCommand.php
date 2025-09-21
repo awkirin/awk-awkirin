@@ -30,7 +30,6 @@ class VideosOptimizeCommand extends Command
             $this->fail('ffmpeg не найден');
         }
 
-
         $inputRaw = $this->option('input') ?: getcwd();
         $outputRaw = $this->option('output');
         $crf = (int) $this->option('crf');
