@@ -1,5 +1,6 @@
 {
     "name": "awkirin/awkirin",
+    "description": "description",
     "type": "project",
     "scripts": {
         "build": "./awkirin app:build awkirin --build-version=latest"
