@@ -38,7 +38,7 @@ jobs:
           build-
 
     - name: Build application
-      run: php awk-helper app:build awk-helper
+      run: php awkirin app:build awkirin
 
     - name: Create Latest Release
       if: github.ref == 'refs/heads/dev'
@@ -48,6 +48,6 @@ jobs:
           --title "Latest Build ($(date +'%Y-%m-%d %H:%M'))" \
           --notes "Автоматическая сборка из dev branch" \
           --latest \
-          builds/awk-helper
+          builds/awkirin
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
