@@ -6,7 +6,6 @@ use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
-
 class FfmpegCommand extends Command
 {
     protected $signature = 'ffmpeg {args* : Arguments to pass to ffmpeg}';
@@ -19,9 +18,9 @@ class FfmpegCommand extends Command
         ];
 
         $userArgs = $this->argument('args');
-        $args = array_merge(['ffmpeg'], $defaultArgs, $userArgs);
+        $args = array_merge($defaultArgs, $userArgs);
 
-        $process = new Process($args);
+        $process = new Process(array_merge(['ffmpeg'], $args));
         $process->setTimeout(null);
         $process->run(function ($type, $buffer) {
             $this->output->write($buffer);
