@@ -1,6 +1,27 @@
 # Install / Update
+## OSX
 ```bash
   mkdir -p ~/bin && curl -L https://github.com/awkirin/awk-awkwrap/releases/download/latest/awkwrap -o ~/bin/awkwrap && chmod +x ~/bin/awkwrap
+```
+## win
+```powershel
+$binPath = "$env:USERPROFILE\bin"
+
+# Создать папку если не существует
+if (!(Test-Path $binPath)) {
+    New-Item -ItemType Directory -Path $binPath
+}
+
+# Скачать файл
+$url = "https://github.com/awkirin/awk-awkwrap/releases/download/latest/awkwrap"
+$output = "$binPath\awkwrap.exe"
+
+try {
+    Invoke-WebRequest -Uri $url -OutFile $output
+    Write-Host "Файл успешно скачан: $output" -ForegroundColor Green
+} catch {
+    Write-Host "Ошибка при скачивании: $_" -ForegroundColor Red
+}
 ```
 
 Qqqq
