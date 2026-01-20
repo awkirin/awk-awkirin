@@ -1,20 +1,16 @@
 @echo off
-set SOURCE=awkirin
-set DEST=%USERPROFILE%\bin\%SOURCE%
+chcp 1251 >nul
 
-if not exist "%SOURCE%" (
-    echo Файл %SOURCE% не найден
-    pause
-    exit /b 1
-)
+set "BIN_DIR=%USERPROFILE%\bin"
+set "SOURCE_DIR=%~dp0"
+set "SOURCE_FILE=%SOURCE_DIR%\awkirin"
+set "TARGET_FILE=%BIN_DIR%\awkirin.bat"
 
-mkdir "%USERPROFILE%\bin" 2>nul
+if not exist "%BIN_DIR%" mkdir "%BIN_DIR%"
 
-net session >nul 2>&1
-if %errorLevel% neq 0 (
-    echo Запустите от Администратора
-    pause
-    exit /b 1
-)
+if exist "%TARGET_FILE%" del "%TARGET_FILE%"
 
-mklink "%DEST%" "%SOURCE%"
+(
+echo @echo off
+echo php "%SOURCE_FILE%" %%*
+) > "%TARGET_FILE%"
