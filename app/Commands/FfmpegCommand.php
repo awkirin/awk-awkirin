@@ -13,14 +13,27 @@ class FfmpegCommand extends Command
 
     public function handle(): int
     {
-        $defaultArgs = [
-            '-crf', '38',
-        ];
+
+        $videoCodec = env('FFMPEG_VIDEO_CODEC');
+        $crf = env('FFMPEG_CRF');
+
+        $defaultArgs  = [];
+
+        if($videoCodec === 'h264_nvenc'){
+            $defaultArgs = [
+                '-c:v', $videoCodec,
+                '-rc', 'vbr',
+                '-cq', $crf,
+            ];
+        }
 
         $userArgs = $this->argument('args');
         $args = array_merge($defaultArgs, $userArgs);
 
         $process = new Process(array_merge(['ffmpeg'], $args));
+
+        $this->info($process->getCommandLine());
+
         $process->setTimeout(null);
         $process->run(function ($type, $buffer) {
             $this->output->write($buffer);
