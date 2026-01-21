@@ -4,3 +4,7 @@
 /.vagrant
 .phpunit.result.cache
 .env
+
+/tests/test.MOV
+/tests/test2.mov
+*.log
