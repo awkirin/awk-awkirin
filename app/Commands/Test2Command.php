@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Commands;
-use AllowDynamicProperties;
-use App\Helpers\Video;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Number;
 use Symfony\Component\Console\Command\Command as CommandAlias;
@@ -19,15 +17,7 @@ class Test2Command extends Base
         {--o|output_dir=~/Desktop/output : o}
         {--e|output_extension=mp4 : o}
     ';
-
     protected $description = "";
-
-    public function __construct()
-    {
-        parent::__construct();
-        //$this->addUsage("-i ./ -o ./ -- 'ffmpeg {i} -c:v h264_nvenc {o}'");
-    }
-
     protected function prepareOutputPath(SplFileInfo $file): string {
         $path = $file->getRealPath();
         $path = str_replace(
@@ -49,9 +39,7 @@ class Test2Command extends Base
 
         return $path;
     }
-
-    protected function prepareFile(SplFileInfo $file): array
-    {
+    protected function prepareFile(SplFileInfo $file): array {
         return [
             'input' => [
                 'path' => $file->getRealPath(),
@@ -63,16 +51,13 @@ class Test2Command extends Base
             ],
         ];
     }
-
-    public function handle(): int
-    {
+    public function handle(): int {
         $this->options["input_dir"] = realpath(path($this->options["input_dir"] ?? getcwd()));
         $this->options["output_dir"] =realpath(path($this->options["output_dir"]));
 
         $files = Finder::create()->files()
             ->in($this->options["input_dir"])
             ->name('/\.(mov|mp4)$/i');
-
 
         $bar = $this->output->createProgressBar($files->count());
         $bar->setFormat('%message%' . PHP_EOL . 'elapsed=%elapsed:6s%' . PHP_EOL . '%current%/%max% [%bar%] %percent:3s%%');
