@@ -31,11 +31,10 @@ abstract class Base extends Command
         $this->newLine();
     }
 
-    protected function stepConfirm()
+    protected function stepConfirm(): int
     {
-
-        if ($this->options['yes'] ?: 0) {
-            return true;
+        if ($this->options['yes']) {
+            return CommandAlias::SUCCESS;
         }
 
         $this->alert('Проверьте');
