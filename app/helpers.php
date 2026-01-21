@@ -1,13 +1,14 @@
 <?php
 
+use Symfony\Component\Filesystem\Path;
+
 function path(string $path): string
 {
-    if (str_starts_with($path, '~/')) {
-        $home = getenv(PHP_OS_FAMILY === 'Windows' ? 'USERPROFILE' : 'HOME');
-        $path = $home . DIRECTORY_SEPARATOR . substr($path, 2);
+    if (str_starts_with($path, '~')) {
+        $home = $_SERVER['HOME'] ?? $_SERVER['USERPROFILE'] ?? throw new RuntimeException('Cannot resolve home directory');
+        $path = $home.substr($path, 1);
     }
-    $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
 
-    return $path;
+    return Path::canonicalize($path);
+
 }
-

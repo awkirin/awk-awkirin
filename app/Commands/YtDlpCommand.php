@@ -3,12 +3,13 @@
 namespace App\Commands;
 
 use LaravelZero\Framework\Commands\Command;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command as CommandAlias;
+use Symfony\Component\Process\Process;
 
 class YtDlpCommand extends Command
 {
     protected $signature = 'yt-dlp {args* : Arguments to pass to yt-dlp}';
+
     protected $description = 'Downloads videos from YouTube using yt-dlp with default parameters';
 
     public function handle(): int

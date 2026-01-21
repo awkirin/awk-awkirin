@@ -2,14 +2,13 @@
 
 namespace App\Helpers;
 
-
 use Symfony\Component\Process\Process;
 
 class Video
 {
-    static function isVideo(string $path): bool
+    public static function isVideo(string $path): bool
     {
-        if (!is_file($path)) {
+        if (! is_file($path)) {
             return false;
         }
 
@@ -24,11 +23,10 @@ class Video
 
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             return false;
         }
 
         return trim($process->getOutput()) !== '';
     }
-
 }

@@ -2,15 +2,14 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Parser;
 use Illuminate\Support\Arr;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Console\Command\Command as CommandAlias;
-use Symfony\Component\Console\Input\InputInterface;
 
 abstract class Base extends Command
 {
     protected array $command = [];
+
     protected array $options = [];
 
     protected function initialize(...$args): void
@@ -32,7 +31,8 @@ abstract class Base extends Command
         $this->newLine();
     }
 
-    protected function stepConfirm() {
+    protected function stepConfirm()
+    {
 
         if ($this->options['yes'] ?: 0) {
             return true;
@@ -42,15 +42,17 @@ abstract class Base extends Command
         $this->info('Опции');
         $this->table(
             ['Опция', 'Значение'],
-            Arr::map($this->options, fn($v, $k) => [
-                $k, is_bool($v) ? ($v ? '✓' : '✗') : $v
+            Arr::map($this->options, fn ($v, $k) => [
+                $k, is_bool($v) ? ($v ? '✓' : '✗') : $v,
             ])
         );
         $this->newLine();
         $this->info('Команда');
         $this->line(Arr::join($this->command, ' '));
-        if(!$this->confirm("Продолжить?", 1)){
+        if (! $this->confirm('Продолжить?', 1)) {
             return CommandAlias::FAILURE;
         }
+
+        return CommandAlias::SUCCESS;
     }
 }

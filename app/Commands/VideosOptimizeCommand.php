@@ -11,7 +11,8 @@ use Throwable;
 class VideosOptimizeCommand extends Command
 {
     protected string $statusFile = '';
-    protected $signature = 'videos:optimize
+
+    protected $signature = '_old_videos:optimize
         {--i|input=./ : Путь к входной директории с видео}
         {--o|output=./output : Путь к выходной директории}
         {--crf=38 : CRF значение для оптимизации (меньше = лучше качество, 18-28 рекомендуется)}
@@ -26,10 +27,9 @@ class VideosOptimizeCommand extends Command
      */
     public function handle(): void
     {
-        if (!$this->isFfmpegAvailable()) {
+        if (! $this->isFfmpegAvailable()) {
             $this->fail('ffmpeg не найден');
         }
-
 
         $inputRaw = $this->option('input') ?: getcwd();
         $outputRaw = $this->option('output');
@@ -38,28 +38,27 @@ class VideosOptimizeCommand extends Command
         $yes = $this->option('yes') ?: false;
         $force = $this->option('force') ?: false;
 
-        if (!is_dir($inputRaw)) {
+        if (! is_dir($inputRaw)) {
             $this->fail("Input path is not a directory: $inputRaw");
         }
 
-        if (!is_dir($outputRaw)) {
-            if (!mkdir($outputRaw, 0755, true)) {
+        if (! is_dir($outputRaw)) {
+            if (! mkdir($outputRaw, 0755, true)) {
                 $this->fail("Failed to create output directory: $outputRaw");
             }
             $this->info("Created output directory: $outputRaw");
         }
-
 
         $input = realpath($inputRaw);
         $output = realpath($outputRaw);
 
         $this->statusFile = "{$output}/_status.csv";
 
-
         $videoFiles = $this->getVideoFiles($input);
 
         if ($videoFiles->count() === 0) {
             $this->info('Видео файлы не найдены');
+
             return;
         }
 
@@ -69,21 +68,19 @@ class VideosOptimizeCommand extends Command
             $filename = $videoFile->getBasename(".{$extension}");
             $files[] = [
                 'inputPath' => "{$videoFile->getRealPath()}",
-                'outputPath' => "{$this->getOutputFileDir($videoFile, $input, $output )}/{$filename}.{$format}",
+                'outputPath' => "{$this->getOutputFileDir($videoFile, $input, $output)}/{$filename}.{$format}",
             ];
         }
 
         $this->table([
-            'inputPath', 'outputPath'
+            'inputPath', 'outputPath',
         ], $files);
 
-        if (!$yes && !$this->confirm('Продолжить обработку видео?', false)) {
+        if (! $yes && ! $this->confirm('Продолжить обработку видео?', false)) {
             $this->fail('Отменено пользователем');
         }
 
-
         $this->createStatusFile();
-
 
         $this->processVideos($files, $crf, $force);
 
@@ -139,15 +136,13 @@ class VideosOptimizeCommand extends Command
     protected function processVideo(string $inputPath, string $outputPath, int $crf, bool $force = false): void
     {
         $outputDir = dirname($outputPath);
-        if (!is_dir($outputDir)) {
+        if (! is_dir($outputDir)) {
             mkdir($outputDir, 0755, true);
         }
-
 
         // Получаем размер исходного файла
         $originalSize = filesize($inputPath);
         $originalSizeFormatted = $this->formatFileSize($originalSize);
-
 
         $command = [
             'ffmpeg',
@@ -163,11 +158,11 @@ class VideosOptimizeCommand extends Command
         $process->setTimeout(3600); // 1 hour timeout
         $process->run();
 
-//        if (!$process->isSuccessful()) {
-//            $this->error("Ошибка обработки файла: {$inputPath}");
-//            $this->error($process->getErrorOutput());
-//        }
-        if (!$process->isSuccessful()) {
+        //        if (!$process->isSuccessful()) {
+        //            $this->error("Ошибка обработки файла: {$inputPath}");
+        //            $this->error($process->getErrorOutput());
+        //        }
+        if (! $process->isSuccessful()) {
             $this->error("Ошибка обработки файла: {$inputPath}");
             $this->error($process->getErrorOutput());
 
@@ -209,12 +204,12 @@ class VideosOptimizeCommand extends Command
 
     protected function getVideoFiles(string $directory)
     {
-        $videoExtensions = [ 'mp4', 'avi', 'mov', 'mkv', 'wmv', 'flv', 'webm', 'm4v', 'mpg', 'mpeg', '3gp' ];
+        $videoExtensions = ['mp4', 'avi', 'mov', 'mkv', 'wmv', 'flv', 'webm', 'm4v', 'mpg', 'mpeg', '3gp'];
         $allExtensions = array_merge(
             $videoExtensions,
             array_map('strtoupper', $videoExtensions)
         );
-        $patterns = array_map(fn($ext) => "*.{$ext}", $allExtensions);
+        $patterns = array_map(fn ($ext) => "*.{$ext}", $allExtensions);
 
         return Finder::create()->in($directory)->files()->name($patterns);
     }
@@ -232,6 +227,7 @@ class VideosOptimizeCommand extends Command
         try {
             $process = new Process(['ffmpeg', '-version']);
             $process->run();
+
             return $process->isSuccessful();
         } catch (\Exception $e) {
             return false;
