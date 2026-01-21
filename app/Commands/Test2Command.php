@@ -16,7 +16,7 @@ class Test2Command extends Base
     protected Collection $files;
 
     protected $signature = 'videos:optimize
-        {--i|input_dir= : i}
+        {--i|input_dir=~/Desktop/input : i}
         {--o|output_dir=~/Desktop/output : o}
         {--e|output_extension=mp4 : o}
     ';
@@ -73,6 +73,7 @@ class Test2Command extends Base
 
         if ($files->isNotEmpty()) {
             $bar = $this->output->createProgressBar($files->count());
+
             $bar->setFormat('%message%'.PHP_EOL.'elapsed=%elapsed:6s%'.PHP_EOL.'%current%/%max% [%bar%] %percent:3s%%');
             $bar->start();
             /* @var SplFileInfo $file */

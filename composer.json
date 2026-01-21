@@ -4,7 +4,8 @@
     "license": "proprietary",
     "type": "project",
     "scripts": {
-        "build": "./awkirin app:build awkirin --build-version=latest"
+        "build": "./awkirin app:build awkirin --build-version=latest",
+        "tests": "clear; vendor/bin/pest"
     },
     "require": {
         "php": "^8.2",
