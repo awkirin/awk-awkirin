@@ -5,53 +5,46 @@ namespace App\Commands;
 use Illuminate\Support\Arr;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Console\Command\Command as CommandAlias;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 
 abstract class Base extends Command
 {
-    protected array $command = [];
-
-    protected array $options = [];
-
     protected function initialize(...$args): void
     {
         parent::initialize(...$args);
-        $this->options = $this->input->getOptions();
-        unset(
-            $this->options['help'],
-            $this->options['silent'],
-            $this->options['quiet'],
-            $this->options['verbose'],
-            $this->options['version'],
-            $this->options['ansi'],
-            $this->options['no-interaction'],
-            $this->options['env'],
-        );
-        $this->title("Команда: $this->name");
-        $this->line($this->description);
-        $this->newLine();
+        $this->clear();
+        $this->name();
     }
 
-    protected function stepConfirm(): int
+    function name(): void
     {
-        if ($this->options['yes']) {
-            return CommandAlias::SUCCESS;
-        }
+        $this->title("$this->name");
+    }
 
-        $this->alert('Проверьте');
-        $this->info('Опции');
-        $this->table(
-            ['Опция', 'Значение'],
-            Arr::map($this->options, fn ($v, $k) => [
-                $k, is_bool($v) ? ($v ? '✓' : '✗') : $v,
-            ])
+    function clear(): void
+    {
+        $this->output->write("\033\143");
+    }
+
+    function addOptionInputDir(): void
+    {
+        $this->addOption(
+            'input-dir',
+            'i',
+            InputOption::VALUE_REQUIRED,
+            'Input directory path',
+            null
         );
-        $this->newLine();
-        $this->info('Команда');
-        $this->line(Arr::join($this->command, ' '));
-        if (! $this->confirm('Продолжить?', 1)) {
-            return CommandAlias::FAILURE;
-        }
-
-        return CommandAlias::SUCCESS;
+    }
+    function addOptionOutputDir(): void
+    {
+        $this->addOption(
+            'output-dir',
+            'o',
+            InputOption::VALUE_REQUIRED,
+            'Input directory path',
+            null
+        );
     }
 }
