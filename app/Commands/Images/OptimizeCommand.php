@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Commands\Videos;
+namespace App\Commands\Images;
 
 use LaravelZero\Framework\Commands\Command;
 
 class OptimizeCommand extends Command
 {
-    protected $signature = 'videos:optimize
+    protected $signature = 'images:optimize
     {--i|input_dir=~/Desktop/input : input_dir}
     {--o|output_dir=~/Desktop/output : output_dir}
     ';
 
-    protected $description = 'Optimize videos';
+    protected $description = 'Optimize images';
 
     public function handle(): void
     {

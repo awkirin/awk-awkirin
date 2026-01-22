@@ -5,16 +5,18 @@ namespace App\Commands\OS;
 use App\Commands\Base;
 use Illuminate\Support\Facades\Process;
 
-class Update extends Base {
+class Update extends Base
+{
     protected $signature = 'os:update';
 
     protected $description = '';
 
     public function handle(): void
     {
+
         $this->task('choco', function () {
             $process = Process::command([
-                'choco', 'upgrade', 'all', '-y'
+                'choco', 'upgrade', 'all', '-y',
             ]);
             $process->run(null, function ($type, $buffer) {
                 $this->output->write($buffer);
@@ -22,12 +24,12 @@ class Update extends Base {
         });
 
         $this->task('lol', function () {
-//            $process = Process::command([
-//                'choco', 'upgrade', 'all', '-y'
-//            ]);
-//            $process->run(null, function ($type, $buffer) {
-//                $this->output->write($buffer);
-//            });
+            //            $process = Process::command([
+            //                'choco', 'upgrade', 'all', '-y'
+            //            ]);
+            //            $process->run(null, function ($type, $buffer) {
+            //                $this->output->write($buffer);
+            //            });
         });
 
     }

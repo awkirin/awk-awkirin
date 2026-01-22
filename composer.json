@@ -41,5 +41,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "bin": ["awkirin"]
+    "bin": ["artisan"]
 }

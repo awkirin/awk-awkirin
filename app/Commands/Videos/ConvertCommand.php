@@ -4,9 +4,9 @@ namespace App\Commands\Videos;
 
 use LaravelZero\Framework\Commands\Command;
 
-class OptimizeCommand extends Command
+class ConvertCommand extends Command
 {
-    protected $signature = 'videos:optimize
+    protected $signature = 'videos:convert
     {--i|input_dir=~/Desktop/input : input_dir}
     {--o|output_dir=~/Desktop/output : output_dir}
     ';
